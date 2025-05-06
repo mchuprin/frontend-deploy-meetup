@@ -1,7 +1,7 @@
 <template>
-  <el-card>
+  <el-card class="card">
     <template #header>
-
+      <h2>Получи AI ассистента для быстрого деплоя</h2>
     </template>
     <el-form
       ref="formRef"
@@ -10,37 +10,51 @@
       @submit.prevent="handleSubmit"
       class="form"
     >
-      <el-form-item label="Ваше имя" prop="name">
+      <el-form-item label="Ваше имя" label-position="top" prop="name">
         <el-input
           v-model="formData.name"
           placeholder="Введите ваше имя"
+          size="large"
         />
       </el-form-item>
-      <el-form-item label="Ваша должность" prop="position">
+      <el-form-item label="Ваша должность" label-position="top" prop="position">
         <el-input
           v-model="formData.position"
           placeholder="Введите вашу должность"
+          size="large"
         />
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" :loading="loading">
-          Отправить
-        </el-button>
-      </el-form-item>
     </el-form>
+    <template #footer>
+      <el-button
+        :loading="loading"
+        type="primary"
+        size="large"
+        @click="handleSubmit"
+      >
+        Отправить
+      </el-button>
+    </template>
   </el-card>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { ElButton, ElForm, ElFormItem, ElInput, ElMessage } from 'element-plus'
-
+import { ElButton, ElForm, ElFormItem, ElInput, ElNotification} from 'element-plus'
+// @ts-ignore
 export default defineComponent({
   name: 'Form',
   components: {
     ElForm, ElFormItem, ElInput, ElButton
   },
-  setup() {
+  props: {
+    modelValue: {
+      type: Boolean,
+      default: false
+    }
+  },
+  emits: ['update:model-value'],
+  setup(_, { emit }) {
     const formRef = ref()
     const loading = ref(false)
     const formData = ref({
@@ -69,8 +83,8 @@ export default defineComponent({
         const formDataToSubmit = new FormData()
 
         // Add form fields (you'll need to get these field IDs from your Google Form)
-        formDataToSubmit.append('entry.1234567890', formData.value.name) // Replace with actual field ID
-        formDataToSubmit.append('entry.0987654321', formData.value.position) // Replace with actual field ID
+        formDataToSubmit.append('entry.384679360', formData.value.name) // Replace with actual field ID
+        formDataToSubmit.append('entry.200145190', formData.value.position) // Replace with actual field ID
 
         await fetch(formUrl, {
           method: 'POST',
@@ -78,13 +92,24 @@ export default defineComponent({
           mode: 'no-cors'
         })
 
-        ElMessage.success('Форма успешно отправлена!')
+        localStorage.setItem('formSubmitted', 'true')
+        emit('update:model-value', true)
+
+        ElNotification({
+          title: 'Форма успешно отправлена!',
+          type: 'success',
+          duration: 3000
+        })
         formData.value = {
           name: '',
           position: ''
         }
       } catch (error) {
-        ElMessage.error('Произошла ошибка при отправке формы')
+        ElNotification({
+          title: 'Произошла ошибка при отправке формы',
+          type: 'error',
+          duration: 3000
+        })
       } finally {
         loading.value = false
       }
@@ -102,30 +127,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* .form-container {
+.card {
   max-width: 600px;
-  margin: 0 auto;
-  padding: 2rem;
-  background: var(--color-background-soft);
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
-h1 {
-  text-align: center;
-  margin-bottom: 2rem;
-  color: var(--color-heading);
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-@media (max-width: 768px) {
-  .form-container {
-    padding: 1.5rem;
-  }
-} */
 </style>

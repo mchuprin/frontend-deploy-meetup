@@ -1,0 +1,39 @@
+@use "./_normalize.scss";
+* {
+  font-family: Inter, sans-serif;
+}
+
+h2 {
+  font-weight: 500;
+}
+
+h3 {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+p, .el-link {
+  font-size: 17px !important;
+  vertical-align: unset !important;
+}
+
+.el-form-item__label {
+  position: relative !important;
+
+  &:before {
+    position: absolute;
+    right: -2px;
+  }
+}
+
+button {
+  width: 100%;
+}
+
+.el-card {
+  border-radius: 15px !important;
+}
+
+.el-notification {
+  z-index: 99999 !important;
+}

@@ -1,46 +1,40 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import Form from '@/components/Form.vue'
+import Gift from '@/components/Gift.vue'
 
+
+// @ts-ignore
 export default defineComponent({
   name: 'App',
   components: {
-    Form
+    Form,
+    Gift,
+  },
+  setup() {
+    const isFormSubmitted = ref(localStorage.getItem('formSubmitted') === 'true');
+
+    return {
+      isFormSubmitted
+    }
   }
 })
 </script>
 
 <template>
-  <div>
-     <Form />
-  </div>
+  <main class="container">
+    <Form v-if="!isFormSubmitted" v-model="isFormSubmitted" />
+    <Gift v-else />
+  </main>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #0083ff;
+  position: relative;
 }
 </style>

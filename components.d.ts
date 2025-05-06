@@ -13,6 +13,8 @@ declare module 'vue' {
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElInput: typeof import('element-plus/es')['ElInput']
+    ElLink: typeof import('element-plus/es')['ElLink']
     Form: typeof import('./src/components/Form.vue')['default']
+    Gift: typeof import('./src/components/Gift.vue')['default']
   }
 }
